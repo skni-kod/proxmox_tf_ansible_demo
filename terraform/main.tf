@@ -11,7 +11,7 @@ terraform {
       s3 = "http://192.168.1.125:9000"
     }
     bucket = "terraform-state"
-    key    = "proxmox/testapp-terraform.tfstate"
+    key    = "proxmox/terraform.test-tfstate"
     region = "us-east-1"
 
     use_path_style            = true
