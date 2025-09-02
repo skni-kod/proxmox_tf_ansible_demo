@@ -47,6 +47,12 @@ jobs:
           echo "container_ip=$CONTAINER_IP" >> $GITHUB_OUTPUT
           echo "Container IP: $CONTAINER_IP"
 
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.CONTAINER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
       - name: Generate Ansible inventory
         working-directory: ./ansible
         run: |
@@ -58,7 +64,7 @@ jobs:
                   nginx:
                     ansible_host: ${{ steps.get_ip.outputs.container_ip }}
                     ansible_user: root
-                    ansible_password: ${{ secrets.CONTAINER_ROOT_PASSWORD }}
+                    ansible_ssh_private_key_file: ~/.ssh/id_ed25519
                     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
           EOF
           echo "Generated inventory file:"

@@ -39,6 +39,9 @@ resource "proxmox_lxc" "container" {
     memory = var.ram_memory
     swap = 512
     start = true
+    ssh_public_keys = <<-EOT
+      ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILyZYnWLkHsYCRPARgzd6tpiNjDlv5CEZYJET9lJ02Hk github-actions
+    EOT
 
     rootfs {
         storage = "local-lvm"
