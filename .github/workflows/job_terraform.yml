@@ -66,4 +66,4 @@ jobs:
       - name: Run Ansible Playbook
         working-directory: ./ansible
         run: |
-          python3 -m ansible.cli.playbook playbook.yml -i inventory.yml
+          python3 -m ansible.cli.playbook playbook.yml -i inventory
