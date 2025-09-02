@@ -44,10 +44,11 @@ jobs:
         run: |
           terraform output -json > ../ansible/terraform_outputs.json
 
-      - name: Install Ansible
+      - name: Install dependencies
         run: |
-          python3 -m pip install --upgrade pip
-          pip install ansible
+          sudo apt-get update
+          sudo apt-get install -y python3-pip python3-venv
+          pip3 install ansible
 
       - name: Run Ansible
         uses: dawidd6/action-ansible-playbook@v2
