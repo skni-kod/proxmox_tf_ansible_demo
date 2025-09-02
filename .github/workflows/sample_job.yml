@@ -56,7 +56,7 @@ jobs:
       - name: Generate Ansible inventory
         working-directory: ./ansible
         run: |
-          echo "nginx ansible_host=${{ steps.get_ip.outputs.container_ip }} ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_ed25519 ansible_ssh_common_args='-o StrictHostKeyChecking=no'" > inventory
+          echo "web ansible_host=${{ steps.get_ip.outputs.container_ip }} ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_ed25519 ansible_ssh_common_args='-o StrictHostKeyChecking=no'" > inventory
 
       - name: Install Ansible
         run: |
