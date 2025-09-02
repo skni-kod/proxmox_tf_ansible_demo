@@ -5,16 +5,3 @@ output "container_ip" {
 output "container_hostname" {
   value       = proxmox_lxc.container.hostname
 }
-
-output "ansible_inventory" {
-  value = {
-    web = {
-      hosts = {
-        nginx = {
-          ansible_host = proxmox_lxc.container.network[0].ip
-          ansible_user = "root"
-        }
-      }
-    }
-  }
-}
