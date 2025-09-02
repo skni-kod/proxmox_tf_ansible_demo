@@ -49,8 +49,7 @@ jobs:
           python3 -m pip install --upgrade pip
           pip install ansible
 
-      - name: Run Ansible
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          playbook: ansible/playbook.yml
-          inventory: ansible/terraform_inventory.yml
+      - name: Run Ansible Playbook
+        working-directory: ./ansible
+        run: |
+          python3 -m ansible.cli.playbook playbook.yml -i terraform_inventory.yml
