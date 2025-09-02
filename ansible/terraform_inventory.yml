@@ -1,0 +1,2 @@
+plugin: json
+path: terraform_outputs.json

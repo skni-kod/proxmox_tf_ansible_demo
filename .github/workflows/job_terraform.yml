@@ -1,0 +1,51 @@
+on:
+  workflow_dispatch:
+  workflow_call:
+  push:
+    branches: [main]
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  TF_VAR_proxmox_password: ${{ secrets.PROXMOX_TF_PASSWORD }}
+  TF_VAR_container_root_password: "${{ secrets.CONTAINER_ROOT_PASSWORD }}"
+  TF_VAR_container_name: "${{ vars.CONTAINER_NAME }}"
+  TF_VAR_container_ip: "${{ vars.CONTAINER_IP }}"
+
+jobs:
+  terraform:
+    name: "Provision infrastructure (container)"
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.0"
+          terraform_wrapper: false
+
+      - name: TF Init
+        working-directory: ./terraform
+        run: terraform init
+
+      - name: TF Plan
+        working-directory: ./terraform
+        run: terraform plan -input=false
+
+      - name: TF Apply
+        working-directory: ./terraform
+        run: terraform apply -auto-approve -input=false
+
+      - name: Get Terraform outputs
+        working-directory: ./terraform
+        run: |
+          terraform output -json > ../ansible/terraform_outputs.json
+
+      - name: Run Ansible
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: ansible/playbook.yml
+          inventory: ansible/terraform_inventory.yml
