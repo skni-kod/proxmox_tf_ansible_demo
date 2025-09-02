@@ -58,6 +58,7 @@ jobs:
                   nginx:
                     ansible_host: ${{ steps.get_ip.outputs.container_ip }}
                     ansible_user: root
+                    ansible_password: ${{ secrets.CONTAINER_ROOT_PASSWORD }}
                     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
           EOF
           echo "Generated inventory file:"
@@ -71,4 +72,4 @@ jobs:
       - name: Run Ansible Playbook
         working-directory: ./ansible
         run: |
-          ansible-playbook playbook.yml -i inventory.yml
+          python3 -m ansible.cli.playbook playbook.yml -i inventory.yml
