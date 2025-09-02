@@ -67,3 +67,7 @@ jobs:
         working-directory: ./ansible
         run: |
           python3 -m ansible.cli.playbook playbook.yml -i inventory
+
+      - name: TF Destroy
+        working-directory: ./terraform
+        run: terraform destroy -auto-approve -input=false
